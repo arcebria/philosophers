@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:09:08 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/15 15:47:19 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:23:21 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,11 @@ int	init_struct(int ac, char **av)
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return(1);
+		return (1);
 	data->n_philos = ft_atoi(av[1]);
 	data->t_die = ft_atoi(av[2]);
 	data->t_eat = ft_atoi(av[3]);
 	data->t_sleep = ft_atoi(av[4]);
-	//data->start_time = get_time();
 	data->meals_flag = 0;
 	if (ac == 6)
 	{
