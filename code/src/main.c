@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:09:08 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/16 17:23:21 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:52:42 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	create_philos(t_data *data)
 int	init_struct(int ac, char **av)
 {
 	t_data		*data;
+	int			i;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -82,6 +83,12 @@ int	init_struct(int ac, char **av)
 	create_forks(data);
 	distribute_forks(data);
 	run_philos(data);
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_join(data->philo_threads[i], NULL);
+		i++;
+	}
 	return (0);
 }
 

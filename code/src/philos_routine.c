@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 20:04:36 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/16 17:23:40 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:55:56 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,21 +132,14 @@ void	*philo_routine(void *arg)
 void	run_philos(t_data *data)
 {
 	int			i;
-	pthread_t	philos[data->n_philos];
-	pthread_t	monitor;
 
+	data->philo_threads = malloc(sizeof(pthread_t) * data->n_philos);
 	i = 0;
 	while (i < data->n_philos)
 	{
-		pthread_create(&philos[i], NULL, philo_routine, data->philos[i]);
+		pthread_create(&data->philo_threads[i], NULL, philo_routine, data->philos[i]);
 		i++;
 	}
-	pthread_create(&monitor, NULL, monitor_health, data);
-	i = 0;
-	while (i < data->n_philos)
-	{
-		pthread_join(philos[i], NULL);
-		i++;
-	}
-	pthread_join(monitor, NULL);
+	pthread_create(&data->monitor, NULL, monitor_health, data);
+	pthread_join(data->monitor, NULL);
 }

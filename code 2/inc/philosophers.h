@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:17:03 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/16 21:08:46 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:01:09 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef	struct s_philos
 	int		left_fork;
 	int		meals_count;
 	int		last_time_meal;
-	//bool	im_dead;
+	bool	full;
 	t_data	*data;
 }	t_philos;
 
@@ -59,12 +59,12 @@ typedef struct s_data
 	int				t_sleep;
 	int				meals;
 	int				meals_flag;
-	//long			start_time;
-	//long			current_time;
-	bool			im_dead;
-	//int				id;
-	pthread_mutex_t	count;
-	pthread_mutex_t	death;
+	int				full_count;
+	long			start_time;
+	bool			full_flag;
+	bool			end_flag;
+	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 	t_philos		**philos;
@@ -74,9 +74,11 @@ void	output(char *s1, char *s2, char *s3);
 void	error_exit(int type);
 void	check_input(t_data *data, int flag);
 void	init_pthreads(t_data *data);
-long	get_time();
+long	get_time(void);
 int		ft_atoi(char *str);
 void	*philo_routine(void *arg);
+void	*monitor_health(void *arg);
 void	run_philos(t_data *data);
+void	print_activity(t_philos *philo, int i);
 
 #endif

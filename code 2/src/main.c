@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:09:08 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/16 17:23:21 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:01:38 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ int	init_struct(int ac, char **av)
 	data->t_eat = ft_atoi(av[3]);
 	data->t_sleep = ft_atoi(av[4]);
 	data->meals_flag = 0;
+	data->full_count = 0;
+	data->end_flag = false;
+	data->full_flag = false;
 	if (ac == 6)
 	{
 		data->meals = ft_atoi(av[5]);

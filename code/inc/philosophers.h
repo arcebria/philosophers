@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:17:03 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/16 12:48:36 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:55:17 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ typedef struct s_data
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 	t_philos		**philos;
+	pthread_t		*philo_threads;
+	pthread_t		monitor;
 }	t_data;
 
 void	output(char *s1, char *s2, char *s3);
