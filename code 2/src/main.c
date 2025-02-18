@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:09:08 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/17 21:01:38 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/18 21:40:21 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	distribute_forks(t_data *data)
 
 void	create_forks(t_data	*data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	data->forks = malloc(data->n_philos * sizeof(pthread_mutex_t));

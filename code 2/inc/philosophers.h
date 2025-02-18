@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:17:03 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/17 21:01:09 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/18 21:33:55 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,15 @@
 # define SLEEP 4
 # define DEATH 5
 
-# define AZ "\033[34m"
 # define RO "\033[31m"
+# define VE "\033[32m"
 # define AM "\033[33m"
+# define AZ "\033[34m"
 # define R "\033[0m"
 
-typedef	struct	s_data t_data;
+typedef struct s_data	t_data;
 
-typedef	struct s_philos
+typedef struct s_philos
 {
 	int		id;
 	int		right_fork;
@@ -60,7 +61,6 @@ typedef struct s_data
 	int				meals;
 	int				meals_flag;
 	int				full_count;
-	long			start_time;
 	bool			full_flag;
 	bool			end_flag;
 	pthread_mutex_t	death_mutex;
@@ -80,5 +80,8 @@ void	*philo_routine(void *arg);
 void	*monitor_health(void *arg);
 void	run_philos(t_data *data);
 void	print_activity(t_philos *philo, int i);
+int		lock_left_fork(t_philos *philo);
+int		lock_right_fork(t_philos *philo);
+int		check_end(t_philos *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:17:03 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/17 12:55:17 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:01:09 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 # define INPUT_ERROR 1
 # define MEMORY_ERROR 2
 
+# define THINK 0
+# define LEFT_FORK 1
+# define RIGHT_FORK 2
+# define EAT 3
+# define SLEEP 4
+# define DEATH 5
+
 # define AZ "\033[34m"
 # define RO "\033[31m"
 # define AM "\033[33m"
@@ -40,7 +47,7 @@ typedef	struct s_philos
 	int		left_fork;
 	int		meals_count;
 	int		last_time_meal;
-	//bool	im_dead;
+	bool	full;
 	t_data	*data;
 }	t_philos;
 
@@ -52,24 +59,26 @@ typedef struct s_data
 	int				t_sleep;
 	int				meals;
 	int				meals_flag;
-	//long			start_time;
-	//long			current_time;
-	bool			im_dead;
-	//int				id;
+	int				full_count;
+	long			start_time;
+	bool			full_flag;
+	bool			end_flag;
+	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 	t_philos		**philos;
-	pthread_t		*philo_threads;
-	pthread_t		monitor;
 }	t_data;
 
 void	output(char *s1, char *s2, char *s3);
 void	error_exit(int type);
 void	check_input(t_data *data, int flag);
 void	init_pthreads(t_data *data);
-long	get_time();
+long	get_time(void);
 int		ft_atoi(char *str);
 void	*philo_routine(void *arg);
+void	*monitor_health(void *arg);
 void	run_philos(t_data *data);
+void	print_activity(t_philos *philo, int i);
 
 #endif
