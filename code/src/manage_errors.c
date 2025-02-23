@@ -12,33 +12,14 @@
 
 #include "../inc/philosophers.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 void	output(char *s1, char *s2, char *s3)
 {
-	int	i;
-
-	i = 0;
-	while (s1[i])
-		write(2, &s1[i++], ft_strlen(s1));
-	i = 0;
-	while (s2[i])
-		write(2, &s2[i++], ft_strlen(s2));
-	i = 0;
-	while (s3[i])
-		write(2, &s3[i++], ft_strlen(s3));
-	write(2, "\n", 1);
+	printf("%s", s1);
+	printf("%s", s2);
+	printf("%s\n", s3);
 }
 
-void	error_exit(int type)
+void	error_exit(int type, t_data *data)
 {
 	if (type == 0)
 		output("Usage: ", USAGE, OPTIONAL);
@@ -46,22 +27,24 @@ void	error_exit(int type)
 		output("Invalid input", "", "");
 	else if (type == 2)
 		output("Error allocating memory", "", "");
+	if (data)
+		free(data);
 	exit (1);
 }
 
 void	check_input(t_data *data, int flag)
 {
-	if (data->n_philos <= 0)
-		error_exit(1);
-	if (data->t_die <= 0)
-		error_exit(1);
-	if (data->t_eat <= 0)
-		error_exit(1);
-	if (data->t_sleep <= 0)
-		error_exit(1);
+	if (data->n_philos <= 0 || data->n_philos > 200)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_die < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_eat < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_sleep < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
 	if (flag)
 	{
-		if (data->meals <= 0)
-		error_exit(INPUT_ERROR);
+		if (data->meals <= 0 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
 	}
 }

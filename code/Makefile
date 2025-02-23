@@ -6,18 +6,18 @@
 #    By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/13 20:05:41 by arcebria          #+#    #+#              #
-#    Updated: 2025/02/18 21:42:47 by arcebria         ###   ########.fr        #
+#    Updated: 2025/02/18 19:17:02 by arcebria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRCS = src/main.c src/manage_errors.c src/utils.c src/philos_routine.c src/monitor.c
+SRCS = src/main.c src/manage_errors.c src/utils_routine.c src/utils_parsing.c src/philos_routine.c src/monitor.c
 OBJS = $(SRCS:.c=.o)
 
 INCLUDE = inc/philosophers.h
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 
 
 all: $(NAME)

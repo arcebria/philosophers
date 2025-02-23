@@ -12,7 +12,7 @@
 
 NAME = philo
 
-SRCS = src/main.c src/manage_errors.c src/utils.c src/philos_routine.c src/monitor.c
+SRCS = src/main.c src/manage_errors.c src/utils_routine.c src/parsing.c src/philos_routine.c src/monitor.c src/free_resources.c
 OBJS = $(SRCS:.c=.o)
 
 INCLUDE = inc/philosophers.h
