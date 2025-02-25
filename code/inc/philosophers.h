@@ -40,48 +40,53 @@
 # define AZ "\033[34m"
 # define R "\033[0m"
 
-typedef struct s_data	t_data;
+//typedef struct s_data	t_data;
+
+typedef struct s_fork
+{
+	pthread_mutex_t	fork_mutex;
+}	t_fork;
 
 typedef struct s_philos
 {
-	int		id;
-	int		right_fork;
-	int		left_fork;
-	int		meals_count;
-	int		last_time_meal;
-	t_data	*data;
+	int					id;
+	int					meals_count;
+	time_t				last_time_meal;
+	t_fork				*right_fork;
+	t_fork				*left_fork;
+	pthread_t			philo_thread;
+	struct s_data		*data;
 }	t_philos;
 
 typedef struct s_data
 {
 	int					n_philos;
+	int					meals;
+	int					meals_flag;
 	time_t				t_die;
 	time_t				t_eat;
 	time_t				t_sleep;
-	int					meals;
-	int					meals_flag;
-	int					full_count;
-	bool				end_flag;
 	time_t				start_time;
+	bool				end;
+	bool				full;
 	pthread_mutex_t		meal_mutex;
 	pthread_mutex_t		end_mutex;
 	pthread_mutex_t		print_mutex;
-	pthread_mutex_t		*forks_mutex;
-	t_philos			**philos;
+	t_fork				*forks;
+	t_philos			*philos;
 }	t_data;
 
 void	output(char *s1, char *s2, char *s3);
 void	error_exit(int type, t_data *data);
 void	check_input(t_data *data, int flag);
-void	init_pthreads(t_data *data);
 time_t	get_time(void);
 int		ft_atoi(char *str);
 void	*philo_routine(void *arg);
 void	*monitor_health(void *arg);
-void	run_philos(t_data *data);
+void	run_philos(t_data *data, pthread_t *monitor);
 void	print_activity(t_philos *philo, int i);
 int		check_end(t_philos *philo);
-int	ft_usleep(time_t time);
+int		ft_usleep(time_t time);
 void	check_syntax(t_data *data, char **av);
 
 #endif

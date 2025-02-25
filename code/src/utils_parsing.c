@@ -49,3 +49,20 @@ int	ft_atoi(char *str)
 	}
 	return (result * sign);
 }
+
+void	check_input(t_data *data, int flag)
+{
+	if (data->n_philos <= 0 || data->n_philos > 200)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_die < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_eat < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	if (data->t_sleep < 60 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	if (flag)
+	{
+		if (data->meals <= 0 || data->t_die > INT_MAX)
+		error_exit(INPUT_ERROR, data);
+	}
+}

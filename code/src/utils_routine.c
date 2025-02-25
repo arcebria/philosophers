@@ -12,7 +12,7 @@
 
 #include "../inc/philosophers.h"
 
-void	print_activity(t_philos *philo, int i)
+/*void	print_activity(t_philos *philo, int i)
 {
 	pthread_mutex_lock(&philo->data->print_mutex);
 	pthread_mutex_lock(&philo->data->end_mutex);
@@ -28,6 +28,27 @@ void	print_activity(t_philos *philo, int i)
 		printf(VE"<%ld> Philo %d is sleeping\n"R, get_time() - philo->data->start_time, philo->id);
 	else if (i == DEATH)
 		printf("<%ld> Philo %d is dead\n", get_time() - philo->data->start_time, philo->id);
+	pthread_mutex_unlock(&philo->data->end_mutex);
+	pthread_mutex_unlock(&philo->data->print_mutex);
+}*/
+
+void	print_activity(t_philos *philo, int i)
+{
+	pthread_mutex_lock(&philo->data->print_mutex);
+	pthread_mutex_lock(&philo->data->end_mutex);
+	if (philo->data->end == false)
+	{
+		if (i == THINK)
+			printf(RO"<%ld> Philo %d is thinking\n"R, get_time() - philo->data->start_time, philo->id);
+		else if (i == LEFT_FORK)
+			printf(AM"<%ld> Philo %d take left fork\n"R, get_time() - philo->data->start_time, philo->id);
+		else if (i == RIGHT_FORK)
+			printf(AM"<%ld> Philo %d take right fork\n"R, get_time() - philo->data->start_time, philo->id);
+		else if (i == EAT)
+			printf(AZ"<%ld> Philo %d is eating\n"R, get_time() - philo->data->start_time, philo->id);
+		else if (i == SLEEP)
+			printf(VE"<%ld> Philo %d is sleeping\n"R, get_time() - philo->data->start_time, philo->id);
+	}
 	pthread_mutex_unlock(&philo->data->end_mutex);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }

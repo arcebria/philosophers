@@ -22,7 +22,7 @@ void	check_full(t_data *data)
 	while(i < data->n_philos)
 	{
 		pthread_mutex_lock(&data->meal_mutex);
-		if (data->philos[i]->meals_count >= data->meals)
+		if (data->philos[i].meals_count >= data->meals)
 			full++;
 		pthread_mutex_unlock(&data->meal_mutex);
 		i++;
@@ -31,7 +31,7 @@ void	check_full(t_data *data)
 	{
 		pthread_mutex_lock(&data->end_mutex);
 		printf("Todos llenos\n");
-		data->end_flag = true;
+		data->end = true;
 		pthread_mutex_unlock(&data->end_mutex);
 	}
 }
@@ -39,24 +39,24 @@ void	check_full(t_data *data)
 void	check_death(t_data *data)
 {
 	int	i;
-	int	current_time;
+	time_t	current_time;
 
 	i = 0;
 	while (i < data->n_philos)
 	{
 		pthread_mutex_lock(&data->meal_mutex);
-		current_time = get_time() - data->philos[i]->last_time_meal;
+		current_time = get_time() - data->philos[i].last_time_meal;
 		pthread_mutex_unlock(&data->meal_mutex);
 		pthread_mutex_lock(&data->end_mutex);
 		if (current_time >= data->t_die)
 		{
-			data->end_flag = true;
+			data->end = true;
 			pthread_mutex_unlock(&data->end_mutex);
-			print_activity(data->philos[i], DEATH);
+			printf("<%ld> Philo %d is dead\n", get_time() - data->start_time, data->philos[i].id);
 		}
 		else
 			pthread_mutex_unlock(&data->end_mutex);
-		if (data->end_flag == true)
+		if (data->end == true)
 			break ;
 		i++;
 	}
@@ -70,10 +70,11 @@ void	*monitor_health(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&data->end_mutex);
-		if (data->end_flag == true)
+		if (data->end == true)
 		{
 			pthread_mutex_unlock(&data->end_mutex);
-			break ;
+			return (NULL) ;
+			//posible fallo en codic original
 		}
 		pthread_mutex_unlock(&data->end_mutex);
 		check_death(data);

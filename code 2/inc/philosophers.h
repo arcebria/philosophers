@@ -48,7 +48,7 @@ typedef struct s_philos
 	int		right_fork;
 	int		left_fork;
 	int		meals_count;
-	int		last_time_meal;
+	time_t	last_time_meal;
 	t_data	*data;
 }	t_philos;
 

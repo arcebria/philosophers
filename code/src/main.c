@@ -12,7 +12,7 @@
 
 #include "../inc/philosophers.h"
 
-void	distribute_forks(t_data *data)
+/*void	distribute_forks(t_data *data)
 {
 	int	i;
 
@@ -38,25 +38,82 @@ void	create_forks(t_data	*data)
 		pthread_mutex_init(&data->forks_mutex[i], NULL);
 		i++;
 	}
+}*/
+
+void    free_structs(t_data *data)
+{
+    free(data->forks);
+    free(data->philos);
+    free(data);
+}
+
+void    free_mutex(t_data *data)
+{
+    int i;
+
+    i = 0;
+    pthread_mutex_destroy(&data->end_mutex);
+    pthread_mutex_destroy(&data->print_mutex);
+    pthread_mutex_destroy(&data->meal_mutex);
+    while(i < data->n_philos)
+    {
+        pthread_mutex_destroy(&data->forks[i].fork_mutex);
+        i++;
+    }
+}
+
+void    free_resources(t_data *data)
+{
+    free_mutex(data);
+    free_structs(data);
+}
+
+void	join_threads(t_data *data, pthread_t monitor)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_join(data->philos[i].philo_thread, NULL);
+		i++;
+		//mirar si en el original li estic enviant els hilos i no la estructura
+	}
+	pthread_join(monitor, NULL);
+}
+
+void	run_threads(t_data *data, pthread_t *monitor)
+{
+	int			i;
+
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_create(&data->philos[i].philo_thread, NULL, philo_routine, &data->philos[i]);
+		i++;
+	}
+	pthread_create(monitor, NULL, monitor_health, data);
 }
 
 void	create_philos(t_data *data)
 {
 	int	i;
 
-	data->philos = malloc(sizeof(t_philos *) * data->n_philos);
-	if (!data->philos)
+	data->philos = malloc(sizeof(t_philos) * data->n_philos);
+	data->forks = malloc(sizeof(t_fork) * data->n_philos);
+	if (!data->philos || !data->forks)
 		error_exit(MEMORY_ERROR, data);
 	i = 0;
 	while (i < data->n_philos)
 	{
-		data->philos[i] = malloc(sizeof(t_philos));
-		if (!data->philos[i])
-			error_exit(MEMORY_ERROR, data);
-		data->philos[i]->last_time_meal = get_time();
-		data->philos[i]->meals_count = 0;
-		data->philos[i]->id = i + 1;
-		data->philos[i]->data = data;
+		//tot aço necessite entendreu
+		pthread_mutex_init(&data->forks[i].fork_mutex, NULL);
+		data->philos[i].id = i + 1;
+		data->philos[i].last_time_meal = get_time();
+		data->philos[i].meals_count = 0;
+		data->philos[i].left_fork = &data->forks[i];
+		data->philos[i].right_fork = &data->forks[(i + 1) % data->n_philos];
+		data->philos[i].data = data;
 		i++;
 	}
 }
@@ -79,31 +136,30 @@ void	parsing(t_data *data, int ac, char **av)
 	check_input(data, data->meals_flag);
 }
 
-int	init_struct(int ac, char **av)
+void	init_struct(t_data *data)
 {
-	t_data		*data;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	parsing(data, ac, av);
-	data->end_flag = false;
-	data->start_time = get_time(); //+ (data->n_philos * 2 * 10);
+	data->end = false;
+	data->start_time = get_time();
 	pthread_mutex_init(&data->end_mutex, NULL);
 	pthread_mutex_init(&data->meal_mutex, NULL);
 	pthread_mutex_init(&data->print_mutex, NULL);
-	create_philos(data);
-	create_forks(data);
-	distribute_forks(data);
-	run_philos(data);
-	return (0);
 }
 
 int	main(int ac, char **av)
 {
+	t_data		*data;
+	pthread_t	monitor;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
 	if (ac != 5 && ac != 6)
 		error_exit (USAGE_ERROR, NULL);
-	if (init_struct(ac, av))
-		error_exit(MEMORY_ERROR, NULL);
+	parsing(data, ac, av);
+	init_struct(data);
+	create_philos(data);
+	run_threads(data, &monitor);
+	join_threads(data, monitor);
+	free_resources(data);
 	return (0);
 }
