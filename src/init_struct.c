@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 19:09:08 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/18 21:40:21 by arcebria         ###   ########.fr       */
+/*   Created: 2025/02/24 15:32:36 by arcebria          #+#    #+#             */
+/*   Updated: 2025/02/25 20:21:11 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,30 @@ void	create_philos(t_data *data)
 	}
 }
 
+void	run_philos(t_data *data)
+{
+	int			i;
+	pthread_t	monitor;
+
+	data->philo = malloc(sizeof(pthread_t) * data->n_philos);
+	if (!data->philo)
+		error_exit(MEMORY_ERROR, data);
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_create(&data->philo[i], NULL, philo_routine, data->philos[i]);
+		i++;
+	}
+	pthread_create(&monitor, NULL, monitor_health, data);
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_join(data->philo[i], NULL);
+		i++;
+	}
+	pthread_join(monitor, NULL);
+}
+
 int	init_struct(int ac, char **av)
 {
 	t_data		*data;
@@ -79,14 +103,5 @@ int	init_struct(int ac, char **av)
 	distribute_forks(data);
 	run_philos(data);
 	free_resources(data);
-	return (0);
-}
-
-int	main(int ac, char **av)
-{
-	if (ac != 5 && ac != 6)
-		error_exit (USAGE_ERROR, NULL);
-	if (init_struct(ac, av))
-		error_exit(MEMORY_ERROR, NULL);
 	return (0);
 }

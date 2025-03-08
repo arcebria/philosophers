@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/24 15:36:58 by arcebria          #+#    #+#             */
+/*   Updated: 2025/02/24 15:37:02 by arcebria         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philosophers.h"
 
-int		ft_is_digit(char *str)
+int	ft_is_digit(char *str)
 {
 	int	i;
 
@@ -20,7 +32,7 @@ int		ft_is_digit(char *str)
 void	check_syntax(t_data *data, char **av)
 {
 	int	i;
-	
+
 	i = 0;
 	while (av[++i])
 	{

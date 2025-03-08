@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 19:19:25 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/12 18:33:45 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:57:02 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ void	check_input(t_data *data, int flag)
 	if (flag)
 	{
 		if (data->meals <= 0 || data->t_die > INT_MAX)
-		error_exit(INPUT_ERROR, data);
+			error_exit(INPUT_ERROR, data);
 	}
 }

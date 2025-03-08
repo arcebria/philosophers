@@ -6,7 +6,7 @@
 /*   By: arcebria <arcebria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:44:15 by arcebria          #+#    #+#             */
-/*   Updated: 2025/02/18 21:39:33 by arcebria         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:35:34 by arcebria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_full(t_data *data)
 
 	i = 0;
 	full = 0;
-	while(i < data->n_philos)
+	while (i < data->n_philos)
 	{
 		pthread_mutex_lock(&data->meal_mutex);
 		if (data->philos[i]->meals_count >= data->meals)
@@ -52,7 +52,8 @@ void	check_death(t_data *data)
 		{
 			data->end_flag = true;
 			pthread_mutex_unlock(&data->end_mutex);
-			print_activity(data->philos[i], DEATH);
+			printf("%ld %d is dead\n",
+				get_time() - data->start_time, data->philos[i]->id);
 		}
 		else
 			pthread_mutex_unlock(&data->end_mutex);
@@ -73,7 +74,7 @@ void	*monitor_health(void *arg)
 		if (data->end_flag == true)
 		{
 			pthread_mutex_unlock(&data->end_mutex);
-			break ;
+			return (NULL);
 		}
 		pthread_mutex_unlock(&data->end_mutex);
 		check_death(data);
