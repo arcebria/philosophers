@@ -17,7 +17,7 @@ OBJS = $(SRCS:.c=.o)
 
 INCLUDE = inc/philosophers.h
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
 
 all: $(NAME)
